@@ -461,22 +461,22 @@ class _Taggable(object):
 		
 	def get_top_tags(self, limit = None):
 		"""Returns a list of the most frequently used Tags on this object."""
-		
+
 		doc = self._request(self.ws_prefix + '.getTopTags', True)
-		
+
 		elements = doc.getElementsByTagName('tag')
 		list = []
-		
+
 		for element in elements:
 			if limit and len(list) >= limit:
 				break
 			tag_name = _extract(element, 'name')
 			tagcount = _extract(element, 'count')
-			
+
 			list.append(TopItem(Tag(tag_name, *self.auth_data), tagcount))
-		
+
 		return list
-		
+
 class ServiceException(Exception):
 	"""Exception related to the Last.fm web service"""
 	
@@ -853,6 +853,22 @@ class Artist(_BaseObject, _Taggable):
 			playcount = _number(_extract(track, "playcount"))
 			
 			list.append( TopItem(Track(artist, title, *self.auth_data), playcount) )
+		
+		return list
+	
+	def get_top_tags(self):
+		"""Returns a list of the tags most frequently given to
+		this artist, in order of tag frequency."""
+		
+		doc = self._request("artist.getTopTags", True)
+		
+		list = []
+		for tag in doc.getElementsByTagName('tag'):
+			
+			name = _extract(tag, "name")
+			# url = _extract(tag, "url")
+			
+			list.append( Tag(name, *self.auth_data) )
 		
 		return list
 	
