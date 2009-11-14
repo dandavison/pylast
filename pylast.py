@@ -3617,3 +3617,11 @@ class Scrobbler(object):
             "b[0]": _string(album), "n[0]": track_number, "m[0]": mbid}
         
         _ScrobblerRequest(self.submissions_url, params, self.network).execute()
+def get_artist_by_mbid(mbid, network):
+	"""Loooks up an artist by its MusicBrainz ID."""
+
+	params = {"mbid": unicode(mbid)}
+
+	doc = _Request("artist.getInfo", network, params).execute(True)
+
+	return network.get_artist(_extract(doc, "name"))
