@@ -3504,6 +3504,15 @@ def extract_items(topitems_or_libraryitems):
     
     return seq
 
+def get_artist_by_mbid(mbid, network):
+       """Loooks up an artist by its MusicBrainz ID."""
+
+       params = {"mbid": unicode(mbid)}
+
+       doc = _Request(network, "artist.getInfo", params).execute(True)
+
+       return network.get_artist(_extract(doc, "name"))
+
 class ScrobblingError(Exception):
     def __init__(self, message):
         Exception.__init__(self)
