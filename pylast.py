@@ -2628,7 +2628,7 @@ class Group(_BaseObject):
         return users
 
 class XSPF(_BaseObject):
-    "A Last.fm XSPF playlist."""
+    """A Last.fm XSPF playlist."""
     
     uri = None
     
